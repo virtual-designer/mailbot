@@ -1,2 +1,5 @@
 # Mailbot
-A discord contacting server staff. 
+
+**Note**: This bot is currently under development. 
+
+A discord bot for contacting server staff. 
