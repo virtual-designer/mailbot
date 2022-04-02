@@ -2,7 +2,7 @@ const fs = require('fs');
 const path = require('path');
 
 module.exports = {
-    prefix: "$",
+    prefix: global.config.props.prefix,
     msg: null,
     commands: {},
     commandNames: [],

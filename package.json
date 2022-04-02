@@ -4,7 +4,8 @@
   "description": "A discord bot for contacting server staff.",
   "main": "src/app.js",
   "scripts": {
-    "start": "node src/app.js"
+    "start": "node src/app.js",
+    "watch": "nodemon src/app.js"
   },
   "repository": {
     "type": "git",
@@ -18,7 +19,8 @@
   },
   "homepage": "https://github.com/virtual-designer/mailbot#readme",
   "dependencies": {
-    "discord.js": "^13.6.0"
+    "discord.js": "^13.6.0",
+    "sqlite3": "^5.0.2"
   },
   "engines": {
     "node": ">=16.0"
