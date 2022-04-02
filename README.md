@@ -1,2 +1,2 @@
-# mailbot
-A discord contacting server staff.
+# Mailbot
+A discord contacting server staff. 
