@@ -3,7 +3,9 @@
   "version": "0.0.1",
   "description": "A discord bot for contacting server staff.",
   "main": "src/app.js",
-  "scripts": {},
+  "scripts": {
+    "start": "node src/app.js"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/virtual-designer/mailbot.git"
@@ -14,5 +16,15 @@
   "bugs": {
     "url": "https://github.com/virtual-designer/mailbot/issues"
   },
-  "homepage": "https://github.com/virtual-designer/mailbot#readme"
+  "homepage": "https://github.com/virtual-designer/mailbot#readme",
+  "dependencies": {
+    "discord.js": "^13.6.0"
+  },
+  "engines": {
+    "node": ">=16.0"
+  },
+  "devDependencies": {
+    "dotenv": "^16.0.0",
+    "nodemon": "^2.0.15"
+  }
 }
