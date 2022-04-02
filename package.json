@@ -1,0 +1,18 @@
+{
+  "name": "mailbot",
+  "version": "0.0.1",
+  "description": "A discord bot for contacting server staff.",
+  "main": "src/app.js",
+  "scripts": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/virtual-designer/mailbot.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/virtual-designer/mailbot/issues"
+  },
+  "homepage": "https://github.com/virtual-designer/mailbot#readme"
+}
