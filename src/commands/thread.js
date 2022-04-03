@@ -31,7 +31,9 @@ module.exports = async (commands) => {
             });
        }
        else {
-            widgetManager.createThreadMessageWidget(embed, id, async (e, dbrow) => {
+            let m = id === undefined ? "createThreadMessageWidget" : "createAllThreadMessageWidget";
+
+            widgetManager[m](embed, id, async (e, dbrow) => {
                 if (e === null) {
                     global.tmp.data.next = 0;
                 }
@@ -39,7 +41,7 @@ module.exports = async (commands) => {
                 await commands.msg.reply({
                     embeds: [e === null ? (
                         new MessageEmbed()
-                        .setDescription("Thread not found.")
+                        .setDescription(id !== undefined ?  "Thread not found." : "No open thread.")
                         .setColor("#f14a60")
                     ) : e],
                 });

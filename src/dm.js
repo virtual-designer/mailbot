@@ -9,12 +9,16 @@ module.exports = {
     },
     async handle() {
         global.db.serialize(async () => {
+            this.newThread = false;
+            
             let date = new Date();
             
-            global.db.get("SELECT * FROM threads WHERE user_id = ?", [this.msg.author.id], (err, row) => {
+            global.db.get("SELECT * FROM threads WHERE user_id = ? AND status = 1", [this.msg.author.id], (err, row) => {
                 if (err) {
                     console.log('Query failed: dm.js: ' + err);
                 }
+
+                console.log(row);
 
                 if (typeof row === 'undefined') {
                     global.db.get("INSERT INTO threads(user, user_id, date) VALUES(?, ?, ?)", [this.msg.author.tag, this.msg.author.id, date.toISOString()], err => {
@@ -24,6 +28,8 @@ module.exports = {
 
                         this.newThread = true;
                     });
+
+                    console.log('inside');
                 }
 
                 global.db.get("SELECT * FROM threads ORDER BY id DESC LIMIT 0, 1", (err, row) => {
@@ -79,6 +85,8 @@ module.exports = {
                             }
                             });
                         }
+
+                        this.thread = null;
                     });
                 }
             }, 700);
