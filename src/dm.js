@@ -44,51 +44,54 @@ module.exports = {
             var tm = setInterval(() => {
                 if (this.thread != null) {
                     clearInterval(tm);
-                    global.db.get("INSERT INTO replies(content, user, user_id, date, thread_id) VALUES(?, ?, ?, ?, ?)", [this.msg.content, this.msg.author.tag, this.msg.author.id, date.toISOString(), this.thread.id], err => {
-                        if (err) {
-                            console.log('Query failed: dm.js');
-                        }
-                        else {
-                            this.msg.reply({
-                                embeds: [
-                                    (new MessageEmbed())
-                                    .setColor('#007bff')
-                                    .setTitle(this.newThread ? "New thread created" : "Message sent")
-                                    .setDescription((this.newThread ? "A new thread was created with your message!" : "Your message was sent successfully!") + " One of the staff group members will get you in touch soon!")
-                                    .setTimestamp()
-                                    .setFooter({
-                                        text: this.newThread ? 'Created' : 'Sent',
-                                    })
-                                ]
-                            });
-
-                            if (global.config.props.logging_channel !== '-') {
-                                global.db.get('SELECT * FROM threads ORDER BY id DESC LIMIT 0, 1', (err, data) => {
-                                    const channel = global.client.channels.cache.find(ch => ch.id === global.config.props.logging_channel.trim());
-    
-                                    if (typeof channel !== 'undefined') {
-                                        let e = (new MessageEmbed())
-                                                .setColor('#007bff')
-                                                .setTitle(this.newThread ? "New thread" : "Incoming message")
-                                                .setDescription((this.newThread ? "A new thread was created." : "") + "\n\n" + this.msg.content)
-                                                .addField("User", this.msg.author.tag)
-                                                .addField("Thread ID", data.id + "")
-                                                .setTimestamp()
-                                                .setFooter({
-                                                    text: this.newThread ? 'Created' : 'Sent',
-                                                });
-    
-                                        channel.send({
-                                            embeds: [
-                                                e
-                                            ]
-                                        });
-                                    }
-                                });
+                    global.db.get("INSERT INTO replies(content, user, user_id, date, thread_id, msg_id) VALUES(?, ?, ?, ?, ?, ?)", [this.msg.content, this.msg.author.tag, this.msg.author.id, date.toISOString(), this.thread.id, this.msg.id], err => {
+                        global.db.get("SELECT * FROM replies ORDER BY id DESC LIMIT 0, 1", async (err, data2) => {
+                            if (err) {
+                                console.log('Query failed: dm.js');
                             }
-                        }
-
-                        this.thread = null;
+                            else {
+                                this.msg.reply({
+                                    embeds: [
+                                        (new MessageEmbed())
+                                        .setColor('#007bff')
+                                        .setTitle(this.newThread ? "New thread created" : "Message sent")
+                                        .setDescription((this.newThread ? "A new thread was created with your message!" : "Your message was sent successfully!") + " One of the staff group members will get you in touch soon!")
+                                        .setTimestamp()
+                                        .setFooter({
+                                            text: this.newThread ? 'Created' : 'Sent',
+                                        })
+                                    ]
+                                });
+    
+                                if (global.config.props.logging_channel !== '-') {
+                                    global.db.get('SELECT * FROM threads ORDER BY id DESC LIMIT 0, 1', (err, data) => {
+                                        const channel = global.client.channels.cache.find(ch => ch.id === global.config.props.logging_channel.trim());
+        
+                                        if (typeof channel !== 'undefined') {
+                                            let e = (new MessageEmbed())
+                                                    .setColor('#007bff')
+                                                    .setTitle(this.newThread ? "New thread" : "Incoming message")
+                                                    .setDescription((this.newThread ? "A new thread was created." : "") + "\n\n" + this.msg.content)
+                                                    .addField("User", this.msg.author.tag)
+                                                    .addField("Thread ID", data.id + "")
+                                                    .addField("Message ID", data2.id + "")
+                                                    .setTimestamp()
+                                                    .setFooter({
+                                                        text: this.newThread ? 'Created' : 'Sent',
+                                                    });
+        
+                                            channel.send({
+                                                embeds: [
+                                                    e
+                                                ]
+                                            });
+                                        }
+                                    });
+                                }
+                            }
+    
+                            this.thread = null;
+                        });
                     });
                 }
             }, 700);

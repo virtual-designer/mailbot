@@ -13,6 +13,7 @@ global.tmp = tmp;
 const commands = require('./commands');
 global.commands = commands;
 const dm = require('./dm');
+const updateDM = require('./updateDM');
 const database = require('./database');
 
 if (fs.existsSync(path.resolve(__dirname, "..", ".env"))) {
@@ -86,6 +87,13 @@ client.on('messageCreate', async (message) => {
             ]
         });
     }
+});
+
+client.on('messageUpdate', async (oldMessage, newMessage) => {
+    if (oldMessage.channel.type !== 'DM' || oldMessage.guild !== null)
+        return;
+
+    await updateDM.handle(commands, oldMessage, newMessage);
 });
 
 client.login(process.env.TOKEN);
