@@ -1,5 +1,6 @@
 const fs = require('fs');
 const path = require('path');
+const { isAllowed } = require('./guard');
 
 module.exports = {
     prefix: global.config.props.prefix,
@@ -11,6 +12,7 @@ module.exports = {
     commandName: "",
     commandsDirectory: path.join(__dirname, 'commands'),
     interactionsDirectory: path.join(__dirname, 'interactions'),
+    channel: null,
     isValid() {
         return this.msg.content.startsWith(this.prefix);
     },
@@ -32,6 +34,7 @@ module.exports = {
         this.argv = msg.content.split(' ').filter(c => c.trim() != '');
         this.args = [...this.argv];
         this.commandName = this.args.shift().replace(this.prefix, '');
+        this.channel = msg.channel.id;
     },
     setInteraction(i) {
         this.interaction = i;
@@ -44,5 +47,8 @@ module.exports = {
     },
     hasArg(arg) {
         return this.args.indexOf(arg) !== -1;
+    },
+    isAllowed() {
+        return isAllowed(this.commandName);
     }
 };

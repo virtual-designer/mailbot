@@ -11,6 +11,7 @@ tmp.init();
 global.tmp = tmp;
 
 const commands = require('./commands');
+global.commands = commands;
 const dm = require('./dm');
 const database = require('./database');
 
@@ -52,8 +53,9 @@ client.on('messageCreate', async (message) => {
 
     let exists = commands.exists();
     let valid = commands.isValid();
+    let allowed = commands.isAllowed();
 
-    if (valid && exists) {
+    if (valid && exists && allowed) {
         await commands.execute();
     }
     else if (valid && !exists && config.get('show_command_not_found_message', false)) {
@@ -62,6 +64,15 @@ client.on('messageCreate', async (message) => {
                 (new discord.MessageEmbed())
                 .setColor('#f14a60')
                 .setDescription(`:x:\tThe command \`${commands.commandName}\` could not be found.`)
+            ]
+        });
+    }
+    else if (config.get('debug') == true && !allowed && exists && valid) {
+        await message.reply({
+            embeds: [
+                (new discord.MessageEmbed())
+                .setColor('#f14a60')
+                .setDescription(`:x:\tCannot run command \`${commands.commandName}\` in this channel.`)
             ]
         });
     }
