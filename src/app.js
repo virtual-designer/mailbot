@@ -6,6 +6,10 @@ const config = require('./config');
 config.load();
 global.config = config;
 
+const tmp = require('./tmp');
+tmp.init();
+global.tmp = tmp;
+
 const commands = require('./commands');
 const dm = require('./dm');
 const database = require('./database');
@@ -26,6 +30,7 @@ const client = new discord.Client({
     ]
 });
 
+global.client = client;
 
 client.on('ready', () => {
     console.log(`Logged in as ${client.user.tag}!`);

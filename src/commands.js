@@ -10,6 +10,7 @@ module.exports = {
     args: [],
     commandName: "",
     commandsDirectory: path.join(__dirname, 'commands'),
+    interactionsDirectory: path.join(__dirname, 'interactions'),
     isValid() {
         return this.msg.content.startsWith(this.prefix);
     },
@@ -28,14 +29,20 @@ module.exports = {
     },
     setMessage(msg) {
         this.msg = msg;
-        this.argv = msg.content.split(' ');
+        this.argv = msg.content.split(' ').filter(c => c.trim() != '');
         this.args = [...this.argv];
         this.commandName = this.args.shift().replace(this.prefix, '');
+    },
+    setInteraction(i) {
+        this.interaction = i;
     },
     exists() {
         return this.commandNames.indexOf(this.commandName) !== -1;
     },
     async execute() {
         return await this.commands[this.commandName](this);
+    },
+    hasArg(arg) {
+        return this.args.indexOf(arg) !== -1;
     }
 };
