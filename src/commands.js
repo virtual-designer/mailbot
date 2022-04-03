@@ -1,6 +1,6 @@
 const fs = require('fs');
 const path = require('path');
-const { isAllowed } = require('./guard');
+const { isAllowed, isAllowedInChannel } = require('./guard');
 
 module.exports = {
     prefix: global.config.props.prefix,
@@ -50,5 +50,8 @@ module.exports = {
     },
     isAllowed() {
         return isAllowed(this.commandName);
+    },
+    isAllowedInChannel() {
+        return isAllowedInChannel(this.commandName);
     }
 };

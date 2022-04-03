@@ -13,6 +13,21 @@ module.exports = async (commands) => {
         return;
     }
 
+    if (commands.args[0].trim() === '-') {
+        global.config.props.control_channel = '-';
+        global.config.update();
+    
+        await commands.msg.reply({
+            embeds: [
+                (new MessageEmbed())
+                .setColor('#5cb85c')
+                .setDescription(":white_check_mark:\t The commands are enabled globally.")
+            ]
+        });
+        
+        return;
+    }
+
     const channel = global.client.channels.cache.find(ch => ch.id === commands.args[0].trim());
 
     if (typeof channel === 'undefined') {

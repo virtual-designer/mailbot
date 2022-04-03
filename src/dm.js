@@ -62,28 +62,30 @@ module.exports = {
                                 ]
                             });
 
-                            global.db.get('SELECT * FROM threads ORDER BY id DESC LIMIT 0, 1', (err, data) => {
-                                const channel = global.client.channels.cache.find(ch => ch.id === global.config.props.logging_channel.trim());
-
-                                if (typeof channel !== 'undefined') {
-                                    let e = (new MessageEmbed())
-                                            .setColor('#007bff')
-                                            .setTitle(this.newThread ? "New thread" : "Incoming message")
-                                            .setDescription((this.newThread ? "A new thread was created." : "") + "\n\n" + this.msg.content)
-                                            .addField("User", this.msg.author.tag)
-                                            .addField("Thread ID", data.id + "")
-                                            .setTimestamp()
-                                            .setFooter({
-                                                text: this.newThread ? 'Created' : 'Sent',
-                                            });
-
-                                    channel.send({
-                                        embeds: [
-                                            e
-                                        ]
-                                    });
+                            if (global.config.props.logging_channel !== '-') {
+                                global.db.get('SELECT * FROM threads ORDER BY id DESC LIMIT 0, 1', (err, data) => {
+                                    const channel = global.client.channels.cache.find(ch => ch.id === global.config.props.logging_channel.trim());
+    
+                                    if (typeof channel !== 'undefined') {
+                                        let e = (new MessageEmbed())
+                                                .setColor('#007bff')
+                                                .setTitle(this.newThread ? "New thread" : "Incoming message")
+                                                .setDescription((this.newThread ? "A new thread was created." : "") + "\n\n" + this.msg.content)
+                                                .addField("User", this.msg.author.tag)
+                                                .addField("Thread ID", data.id + "")
+                                                .setTimestamp()
+                                                .setFooter({
+                                                    text: this.newThread ? 'Created' : 'Sent',
+                                                });
+    
+                                        channel.send({
+                                            embeds: [
+                                                e
+                                            ]
+                                        });
+                                    }
+                                });
                             }
-                            });
                         }
 
                         this.thread = null;

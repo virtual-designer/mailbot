@@ -13,6 +13,21 @@ module.exports = async (commands) => {
         return;
     }
 
+    if (commands.args[0].trim() === '-') {
+        global.config.props.logging_channel = '-';
+        global.config.update();
+
+        commands.msg.reply({
+            embeds: [
+                (new MessageEmbed())
+                .setColor('#f14a60')
+                .setDescription(`:x:\tLogging has been disabled.`)
+            ]
+        });
+
+        return;
+    }
+
     const channel = global.client.channels.cache.find(ch => ch.id === commands.args[0].trim());
 
     if (typeof channel === 'undefined') {

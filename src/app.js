@@ -53,9 +53,10 @@ client.on('messageCreate', async (message) => {
 
     let exists = commands.exists();
     let valid = commands.isValid();
+    let allowedInChannel = commands.isAllowedInChannel();
     let allowed = commands.isAllowed();
 
-    if (valid && exists && allowed) {
+    if (valid && exists && allowed && allowedInChannel) {
         await commands.execute();
     }
     else if (valid && !exists && config.get('show_command_not_found_message', false)) {
@@ -67,12 +68,21 @@ client.on('messageCreate', async (message) => {
             ]
         });
     }
-    else if (config.get('debug') == true && !allowed && exists && valid) {
+    else if (config.get('debug') == true && !allowedInChannel && allowed && exists && valid) {
         await message.reply({
             embeds: [
                 (new discord.MessageEmbed())
                 .setColor('#f14a60')
                 .setDescription(`:x:\tCannot run command \`${commands.commandName}\` in this channel.`)
+            ]
+        });
+    }
+    else if (config.get('debug') == true && !allowed && exists && valid) {
+        await message.reply({
+            embeds: [
+                (new discord.MessageEmbed())
+                .setColor('#f14a60')
+                .setDescription(`:x:\tYou don't have permission to run \`${commands.commandName}\` on this server.`)
             ]
         });
     }
