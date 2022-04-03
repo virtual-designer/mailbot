@@ -23,6 +23,7 @@ module.exports = {
                     embed.addField("Thread author", dbrow.user);
                     embed.addField("Sent at", new Date(dbrow2.date).toUTCString());
                     embed.addField("Status", dbrow.status === 1 ? "Open" : "Closed");
+                    embed.addField("Message ID", dbrow2.id + "");
                   //  embed.addField("Updated at", new Date(dbrow2.date)); TODO
                     embed.addField("ID", dbrow.id + "");
                     embed.addField("Thread created at", new Date(dbrow.date).toUTCString());
@@ -55,6 +56,7 @@ module.exports = {
                     embed.addField("Message author", dbrow2.user);
                     embed.addField("Thread author", dbrow.user);
                     embed.addField("ID", dbrow.id + "");
+                    embed.addField("Message ID", dbrow2.id + "");
                     embed.addField("Status", dbrow.status === 1 ? "Open" : "Closed");
                     embed.addField("Sent at", new Date(dbrow2.date).toUTCString());
                   //  embed.addField("Updated at", new Date(dbrow2.date)); TODO
@@ -63,6 +65,29 @@ module.exports = {
             
                     callback(embed, dbrow, dbrow2);
                 });
+            });
+        });
+    },
+    createMessageWidget(embed, id, callback) {
+        global.db.serialize(() => {
+            global.db.get("SELECT * FROM replies WHERE id = ? ORDER BY id DESC LIMIT 0, 1", [id], (err, dbrow) => {
+                if (err) {
+                    console.log("Error: " + err);
+                }
+
+                if (dbrow === undefined)
+                    return callback(null);
+            
+                embed.setAuthor({ name: dbrow.user });
+                embed.setDescription(dbrow.content);
+                embed.addField("Message author", dbrow.user);
+                embed.addField("Thread ID", dbrow.thread_id + '');
+                embed.addField("ID", dbrow.id + "");
+                embed.addField("Sent at", new Date(dbrow.date).toUTCString());
+                //  embed.addField("Updated at", new Date(dbrow2.date)); TODO
+                embed.setTimestamp(new Date(dbrow.date));
+        
+                callback(embed, dbrow);
             });
         });
     }
