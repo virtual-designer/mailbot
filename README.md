@@ -2,4 +2,4 @@
 
 **Note**: This bot is currently under development. 
 
-A discord bot for contacting server staff. 
+A discord bot for contacting server staff.
