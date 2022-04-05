@@ -11,7 +11,6 @@ module.exports = {
     args: [],
     commandName: "",
     commandsDirectory: path.join(__dirname, 'commands'),
-    interactionsDirectory: path.join(__dirname, 'interactions'),
     channel: null,
     isValid() {
         return this.msg.content.startsWith(this.prefix);
