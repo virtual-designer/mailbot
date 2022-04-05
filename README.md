@@ -6,4 +6,8 @@
 ![](https://img.shields.io/github/languages/top/virtual-designer/mailbot?color=yellow&label=JavaScript)
 ![GitHub](https://img.shields.io/github/license/virtual-designer/mailbot?color=%23007bff&label=License)
 
-A discord bot for contacting server staff.
+A Discord bot for contacting server staff. 
+This bot was specially made for [The Everything Server](https://discord.gg/x7DHfyh4NS) Discord server.
+
+### Support
+Please email at rakinar2@onesoftnet.ml.
