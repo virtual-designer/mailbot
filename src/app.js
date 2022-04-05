@@ -15,6 +15,7 @@ global.commands = commands;
 const dm = require('./dm');
 const updateDM = require('./updateDM');
 const database = require('./database');
+const { db } = require('./database');
 
 if (fs.existsSync(path.resolve(__dirname, "..", ".env"))) {
     console.log("Loading env file...");
@@ -90,7 +91,7 @@ client.on('messageCreate', async (message) => {
 });
 
 client.on('messageUpdate', async (oldMessage, newMessage) => {
-    if (oldMessage.channel.type !== 'DM' || oldMessage.guild !== null)
+   if (oldMessage.channel.type !== 'DM' || oldMessage.guild !== null)
         return;
 
     await updateDM.handle(commands, oldMessage, newMessage);
