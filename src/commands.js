@@ -30,10 +30,13 @@ module.exports = {
     },
     setMessage(msg) {
         this.msg = msg;
-        this.argv = msg.content.split(' ').filter(c => c.trim() != '');
-        this.args = [...this.argv];
-        this.commandName = this.args.shift().replace(this.prefix, '');
-        this.channel = msg.channel.id;
+
+        if (this.isValid()) {
+          this.argv = msg.content.split(' ').filter(c => c.trim() != '');
+          this.args = [...this.argv];
+          this.commandName = this.args.shift().replace(this.prefix, '');
+          this.channel = msg.channel.id;
+        }
     },
     setInteraction(i) {
         this.interaction = i;
