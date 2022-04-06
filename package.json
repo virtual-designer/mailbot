@@ -1,6 +1,6 @@
 {
   "name": "mailbot",
-  "version": "0.0.1",
+  "version": "1.0.0-beta1",
   "description": "A discord bot for contacting server staff.",
   "main": "src/app.js",
   "scripts": {
