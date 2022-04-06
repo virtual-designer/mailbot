@@ -1,6 +1,9 @@
 const discord = require('discord.js');
 const fs = require('fs');
 const path = require('path');
+const keepAlive = require('./server');
+
+keepAlive();
 
 const config = require('./config');
 config.load();

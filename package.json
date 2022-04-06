@@ -20,6 +20,7 @@
   "homepage": "https://github.com/virtual-designer/mailbot#readme",
   "dependencies": {
     "discord.js": "^13.6.0",
+    "express": "^4.17.3",
     "sqlite3": "^5.0.2",
     "tar": "^4.4.18"
   },
