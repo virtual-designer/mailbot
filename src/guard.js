@@ -6,7 +6,7 @@ function isAllowedInChannel(cmd) {
 }
 
 function isAllowed(cmd) {
-    return disallowedCommands.indexOf(cmd) === -1;
+    return disallowedCommands.indexOf(cmd) === -1 && (global.config.props.role === '-' || global.commands.msg.member.roles.cache.has(global.config.props.role));
 }
 
 module.exports = {

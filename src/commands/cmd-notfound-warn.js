@@ -8,7 +8,7 @@ module.exports = async (commands) => {
         embeds: [
             (new MessageEmbed())
             .setColor('#5cb85c')
-            .setDescription(`${global.config.props.show_command_not_found_message ? ":white_check_mark:" : ":x:"}\Command not found warning has been ${global.config.props.show_command_not_found_message ? "enabled" : "disabled"}.`)
+            .setDescription(`${global.config.props.show_command_not_found_message ? ":white_check_mark:" : ":x:"}\tCommand not found warning has been ${global.config.props.show_command_not_found_message ? "enabled" : "disabled"}.`)
         ]
     });
 };
