@@ -7,7 +7,7 @@ function keepAlive() {
         res.send("Server is up.");
     });
 
-    app.listen(80);
+    app.listen(3000);
 }
 
 module.exports = keepAlive;
