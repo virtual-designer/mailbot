@@ -1,4 +1,5 @@
 const { MessageEmbed } = require("discord.js");
+const { generate } = require("./log");
 
 module.exports = {
     async handle(commands, oldMsg, newMsg) {
@@ -30,11 +31,15 @@ module.exports = {
                                     text: "Updated"
                                 });
 
-                            await channel.send({
+                            let obj = {
                                 embeds: [
                                     e
                                 ]
-                            });
+                            };
+
+                            generate(obj);
+
+                            await channel.send(obj);
                         }
 
                         await newMsg.reply({

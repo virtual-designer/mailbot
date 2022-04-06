@@ -63,6 +63,12 @@ module.exports = {
             examples: "%%msg 45"
         },
         {
+            name: 'ping',
+            description: 'Set the role for message pings.',
+            usage: "%%ping <RoleMention>",
+            examples: "%%ping @Moderator"
+        },
+        {
             name: 'reply',
             description: 'Reply to a thread.',
             usage: "%%reply <ThreadID> <...Message>",
@@ -79,6 +85,12 @@ module.exports = {
             description: 'Set the authorized role for running commands. Users having this role can only run commands. You can give a mention or role ID as the argument. To allow globally, use `-` in the place of `<RoleID|MentionRole>`.',
             usage: "%%setrole <RoleID|MentionRole|->",
             examples: "%%setrole 387654398524824\n%%setrole @Moderators\n%%setrole -"
+        },
+        {
+            name: 'setup',
+            description: 'Setup the bot. You should only run this command once.',
+            usage: "%%setup",
+            examples: "%%setup"
         },
         {
             name: 'thread',

@@ -1,4 +1,5 @@
 const {MessageEmbed} = require('discord.js');
+const { generate } = require('../log');
 
 module.exports = async (commands) => {
     if (typeof commands.args[1] === 'undefined') {
@@ -51,7 +52,7 @@ module.exports = async (commands) => {
                     const channel = global.client.channels.cache.find(ch => ch.id === global.config.props.logging_channel.trim());
 
                     if (typeof channel !== 'undefined') {
-                        await channel.send({
+                        let obj = {
                             embeds: [
                                 (new MessageEmbed())
                                     .setColor('#007bff')
@@ -65,7 +66,12 @@ module.exports = async (commands) => {
                                         text: 'Sent',
                                     })
                             ]
-                        });
+                        };
+
+                    
+                        generate(obj);
+
+                        await channel.send(obj);
                     }
 
                     const user = client.users.cache.get(data.user_id);

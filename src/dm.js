@@ -1,4 +1,5 @@
 const { MessageEmbed } = require('discord.js');
+const { generate } = require('./log');
 
 module.exports = {
     msg: null,
@@ -80,11 +81,15 @@ module.exports = {
                                                         text: this.newThread ? 'Created' : 'Sent',
                                                     });
         
-                                            channel.send({
+                                            let obj = {
                                                 embeds: [
                                                     e
                                                 ]
-                                            });
+                                            };
+
+                                            generate(obj);
+
+                                            channel.send(obj);
                                         }
                                     });
                                 }

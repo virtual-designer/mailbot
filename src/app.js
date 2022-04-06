@@ -48,6 +48,18 @@ client.on('messageCreate', async (message) => {
     if (message.author.bot)
         return;
 
+    if (global.config.props.guild_id === '-' && !message.content.startsWith('-setup')) {
+        await message.reply({
+            embeds: [
+                (new discord.MessageEmbed())
+                .setColor('#007bff')
+                .setDescription("Setup required! Run `-setup` to complete setup.")
+            ]
+        });
+
+        return;
+    }
+
     commands.setMessage(message);
 
     if (message.channel.type === 'dm' || message.guild === null) {
