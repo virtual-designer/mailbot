@@ -1,4 +1,5 @@
 const { MessageEmbed } = require('discord.js');
+const channelManager = require('./channelManager');
 const { generate } = require('./log');
 
 module.exports = {
@@ -11,10 +12,11 @@ module.exports = {
     async handle() {
         global.db.serialize(async () => {
             this.newThread = false;
+            let threadChannel = null;
             
             let date = new Date();
             
-            global.db.get("SELECT * FROM threads WHERE user_id = ? AND status = 1", [this.msg.author.id], (err, row) => {
+            await global.db.get("SELECT * FROM threads WHERE user_id = ? AND status = 1", [this.msg.author.id], async (err, row) => {
                 if (err) {
                     console.log('Query failed: dm.js: ' + err);
                 }
@@ -22,18 +24,18 @@ module.exports = {
                 console.log(row);
 
                 if (typeof row === 'undefined') {
-                    global.db.get("INSERT INTO threads(user, user_id, date) VALUES(?, ?, ?)", [this.msg.author.tag, this.msg.author.id, date.toISOString()], err => {
+                    threadChannel = await channelManager.createThread(this.msg);
+
+                    await global.db.get("INSERT INTO threads(user, user_id, date, channel_id) VALUES(?, ?, ?, ?)", [this.msg.author.tag, this.msg.author.id, date.toISOString(), threadChannel.id], err => {
                         if (err) {
                             console.log('Query failed: dm.js: ' + err);
                         }
 
                         this.newThread = true;
                     });
-
-                    console.log('inside');
                 }
 
-                global.db.get("SELECT * FROM threads ORDER BY id DESC LIMIT 0, 1", (err, row) => {
+                await global.db.get("SELECT * FROM threads ORDER BY id DESC LIMIT 0, 1", (err, row) => {
                     if (err) {
                         console.log('Query failed: dm.js: ' + err);
                     }
@@ -64,8 +66,8 @@ module.exports = {
                                     ]
                                 });
     
-                                if (global.config.props.logging_channel !== '-') {
-                                    global.db.get('SELECT * FROM threads ORDER BY id DESC LIMIT 0, 1', (err, data) => {
+                                if (global.config.props.logging_channel !== '-' || global.config.props.channel_category !== '-') {
+                                    global.db.get('SELECT * FROM threads ORDER BY id DESC LIMIT 0, 1', async (err, data) => {
                                         const channel = global.client.channels.cache.find(ch => ch.id === global.config.props.logging_channel.trim());
         
                                         if (typeof channel !== 'undefined') {
@@ -89,7 +91,53 @@ module.exports = {
 
                                             generate(obj);
 
-                                            channel.send(obj);
+                                            await channel.send(obj);
+                                        }
+
+                                        if (this.newThread) {
+                                            await threadChannel.send({
+                                                embeds: [
+                                                    (new MessageEmbed())
+                                                    .setColor('#007bff')
+                                                    .setTitle("New Thread")
+                                                    .setDescription('This is the start of the thread conversation. Use `-rt <message>` to send a message.')
+                                                    .setAuthor({name: this.msg.author.tag})
+                                                    .addField("Thread ID", data.id + "")
+                                                    .setFooter({text: 'Created'})
+                                                    .setTimestamp()
+                                                ]
+                                            });
+
+                                            await threadChannel.send({
+                                                embeds: [
+                                                    (new MessageEmbed())
+                                                    .setColor('#007bff')
+                                                    .setTitle("Message Recieved")
+                                                    .setDescription(data2.content)
+                                                    .setAuthor({name: this.msg.author.tag})
+                                                    .setFooter({text: 'Received'})
+                                                    .addField("Thread ID", data.id + "")
+                                                    .addField("Message ID", data2.id + "")
+                                                    .setTimestamp()
+                                                ]
+                                            });
+                                        }
+                                        else {
+                                            threadChannel = await channelManager.findThreadChannelCategoryInDM(data.channel_id);
+
+                                            await threadChannel.send({
+                                                embeds: [
+                                                    (new MessageEmbed())
+                                                    .setColor('#007bff')
+                                                    .setTitle("Message Recieved")
+                                                    .setDescription(data2.content)
+                                                    .setAuthor({name: this.msg.author.tag})
+                                                    .setFooter({text: 'Received'})
+                                                    .addField("Thread ID", data.id + "")
+                                                    .addField("Message ID", data2.id + "")
+                                                    .setTimestamp()
+                                                ]
+                                            });
                                         }
                                     });
                                 }

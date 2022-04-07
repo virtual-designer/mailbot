@@ -1,4 +1,5 @@
 const { MessageEmbed } = require('discord.js');
+const { findThreadChannelCategory } = require('../channelManager');
 const { generate } = require('../log');
 
 module.exports = async (commands) => {
@@ -68,6 +69,11 @@ module.exports = async (commands) => {
                     generate(obj);
 
                     await channel.send(obj);
+                }
+                
+                if (typeof commands.args[1] !== 'undefined' && commands.args[1] === '-d') {
+                    let threadChannel = findThreadChannelCategory(data.channel_id);
+                    await threadChannel.delete();
                 }
 
                 const user = client.users.cache.get(data.user_id);

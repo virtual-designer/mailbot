@@ -32,10 +32,10 @@ module.exports = {
         this.msg = msg;
 
         if (this.isValid()) {
-          this.argv = msg.content.split(' ').filter(c => c.trim() != '');
-          this.args = [...this.argv];
-          this.commandName = this.args.shift().replace(this.prefix, '');
-          this.channel = msg.channel.id;
+            this.argv = msg.content.split(' ').filter(c => c.trim() != '');
+            this.args = [...this.argv];
+            this.commandName = this.args.shift().replace(this.prefix, '');
+            this.channel = msg.channel.id;
         }
     },
     setInteraction(i) {
