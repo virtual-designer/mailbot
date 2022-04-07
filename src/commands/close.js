@@ -59,7 +59,7 @@ module.exports = async (commands) => {
                                 .setColor('#f14a60')
                                 .setDescription(`A thread has been closed.`)
                                 .addField('ID', data.id + '')
-                                .addField('Closed by', `<@${commands.msg.author.id}>`)
+                                .addField('Closed by', `${commands.msg.author.tag}`)
                                 .setFooter({text: 'Closed'})
                                 .setTimestamp()
                         ]
@@ -70,9 +70,21 @@ module.exports = async (commands) => {
 
                     await channel.send(obj);
                 }
+
+                let threadChannel = findThreadChannelCategory(data.channel_id);
+
+                await threadChannel.send({
+                    embeds: [
+                        (new MessageEmbed())
+                            .setColor('#f14a60')
+                            .setDescription(`This thread has been closed.`)
+                            .addField('ID', data.id + '')
+                            .setFooter({text: 'Closed'})
+                            .setTimestamp()
+                    ]
+                });
                 
                 if (typeof commands.args[1] !== 'undefined' && commands.args[1] === '-d') {
-                    let threadChannel = findThreadChannelCategory(data.channel_id);
                     await threadChannel.delete();
                 }
 
