@@ -1,5 +1,5 @@
 module.exports = {
-    version: '1.0.0-beta1',
+    version: '2.0.0-beta1',
     support: 'rakinar2@onesoftnet.ml',
     data: [
         {
@@ -10,9 +10,9 @@ module.exports = {
         },
         {
             name: 'close',
-            description: 'Closes a thread.',
-            usage: "%%close <ThreadID>",
-            examples: "%%close 78"
+            description: 'Closes a thread. Passing `-d` will delete the thread channel.',
+            usage: "%%close <ThreadID> [-d]",
+            examples: "%%close 78\n%%close 80 -d"
         },
         {
             name: 'cmd-notfound-warn',
@@ -75,10 +75,22 @@ module.exports = {
             examples: "%%reply 45 Hi, your request has been accepted."
         },
         {
+            name: 'rt',
+            description: 'Reply to a thread, inside a thread channel. This command won\'t work outside of a thread channel.',
+            usage: "%%rt <...Message>",
+            examples: "%%rt Hi, your request has been accepted."
+        },
+        {
             name: 'set-prefix',
             description: 'Set the bot prefix.',
             usage: "%%set-prefix <NewPrefix>",
             examples: "%%set-prefix -"
+        },
+        {
+            name: 'setgroup',
+            description: 'Set the channel category for threads.',
+            usage: "%%setgroup <ChannelID>",
+            examples: "%%setgroup 387654398524824"
         },
         {
             name: 'setrole',
