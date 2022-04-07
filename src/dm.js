@@ -53,18 +53,20 @@ module.exports = {
                                 console.log('Query failed: dm.js');
                             }
                             else {
-                                this.msg.reply({
-                                    embeds: [
-                                        (new MessageEmbed())
-                                        .setColor('#007bff')
-                                        .setTitle(this.newThread ? "New thread created" : "Message sent")
-                                        .setDescription((this.newThread ? "A new thread was created with your message!" : "Your message was sent successfully!") + " One of the staff group members will get you in touch soon!")
-                                        .setTimestamp()
-                                        .setFooter({
-                                            text: this.newThread ? 'Created' : 'Sent',
-                                        })
-                                    ]
-                                });
+                                if (this.newThread) {
+                                    this.msg.reply({
+                                        embeds: [
+                                            (new MessageEmbed())
+                                            .setColor('#007bff')
+                                            .setTitle("New thread created")
+                                            .setDescription("A new thread was created with your message! One of the staff group members will get you in touch soon!")
+                                            .setTimestamp()
+                                            .setFooter({
+                                                text: 'Created',
+                                            })
+                                        ]
+                                    });
+                                }
     
                                 if (global.config.props.logging_channel !== '-' || global.config.props.channel_category !== '-') {
                                     global.db.get('SELECT * FROM threads ORDER BY id DESC LIMIT 0, 1', async (err, data) => {
@@ -112,7 +114,7 @@ module.exports = {
                                                 embeds: [
                                                     (new MessageEmbed())
                                                     .setColor('#007bff')
-                                                    .setTitle("Message Recieved")
+                                                    .setTitle("Message Received")
                                                     .setDescription(data2.content)
                                                     .setAuthor({name: this.msg.author.tag})
                                                     .setFooter({text: 'Received'})
@@ -129,7 +131,7 @@ module.exports = {
                                                 embeds: [
                                                     (new MessageEmbed())
                                                     .setColor('#007bff')
-                                                    .setTitle("Message Recieved")
+                                                    .setTitle("Message Received")
                                                     .setDescription(data2.content)
                                                     .setAuthor({name: this.msg.author.tag})
                                                     .setFooter({text: 'Received'})
