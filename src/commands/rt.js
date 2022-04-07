@@ -2,12 +2,24 @@ const { MessageEmbed } = require('discord.js');
 const { generate } = require('../log');
 
 module.exports = async (commands) => {
-    if (typeof commands.args[1] === 'undefined') {
+    if (commands.msg.channel.parent.id !== global.config.props.channel_category) {
         await commands.msg.reply({
             embeds: [
                 (new MessageEmbed())
                     .setColor('#f14a60')
-                    .setDescription(`:x:\tThe command \`${commands.commandName}\` requires at least two arguments.`)
+                    .setDescription(`:x:\tThe command \`${commands.commandName}\` must be runned inside a thread channel.`)
+            ]
+        });
+
+        return;
+    }
+
+    if (typeof commands.args[0] === 'undefined') {
+        await commands.msg.reply({
+            embeds: [
+                (new MessageEmbed())
+                    .setColor('#f14a60')
+                    .setDescription(`:x:\tThe command \`${commands.commandName}\` requires at least one argument.`)
             ]
         });
 
@@ -15,7 +27,7 @@ module.exports = async (commands) => {
     }
 
     global.db.serialize(async () => {
-        global.db.get("SELECT * FROM threads WHERE id = ?", [commands.args[0].trim()], async (err, data) => {
+        global.db.get("SELECT * FROM threads WHERE channel_id = ? AND status = 1", [commands.msg.channel.id], async (err, data) => {
             if (err) {
                 console.log(err);
             }
@@ -25,16 +37,14 @@ module.exports = async (commands) => {
                     embeds: [
                         (new MessageEmbed())
                             .setColor('#f14a60')
-                            .setDescription(`:x:\tThe thread with ID \`${commands.args[0].trim()}\` doesn't exist.`)
+                            .setDescription(`:x:\tThe thread doesn't exist or has been closed.`)
                     ]
                 });
 
                 return;
             }
 
-            const newContent = [...commands.args];
-            newContent.shift();
-            const content = newContent.join(' ');
+            const content = commands.args.join(' ');
 
             global.db.get("INSERT INTO replies(content, user, user_id, date, thread_id, msg_id) VALUES(?, ?, ?, ?, ?, ?)", [
                 content,
@@ -67,7 +77,6 @@ module.exports = async (commands) => {
                                     })
                             ]
                         };
-
                     
                         generate(obj);
 
@@ -92,9 +101,7 @@ module.exports = async (commands) => {
                             ]
                         });
 
-                        await db.get('UPDATE replies SET msg_id = ? WHERE id = ?', [msg.id, data2.id], async (err) => {
-
-                        });
+                        await db.get('UPDATE replies SET msg_id = ? WHERE id = ?', [msg.id, data2.id], async (err) => {});
                     }
 
                     await commands.msg.reply({
@@ -102,7 +109,7 @@ module.exports = async (commands) => {
                             (new MessageEmbed())
                                 .setColor('#5cb85c')
                                 .setTitle("Reply Sent")
-                                .addField("Sent by", '<@' + commands.msg.author.id + '>')
+                                .addField("Sent by", commands.msg.author.tag + '')
                                 .addField("Thread ID", data.id + "")
                                 .addField("Message ID", data2.id + "")
                                 .setTimestamp()
