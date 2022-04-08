@@ -1,4 +1,4 @@
-const { MessageEmbed, User } = require('discord.js');
+const { MessageEmbed } = require('discord.js');
 const { generate } = require('../log');
 
 module.exports = async (commands) => {
@@ -91,8 +91,8 @@ module.exports = async (commands) => {
                                 (new MessageEmbed())
                                     .setColor('#007bff')
                                     .setAuthor({
-                                        name: commands.msg.author.tag,
-                                        iconURL: commands.msg.author.avatarURL(),
+                                        name: 'Staff',
+                                        iconURL: client.user.avatarURL(),
                                     })
                                     .setDescription(content)
                                     .setTimestamp()

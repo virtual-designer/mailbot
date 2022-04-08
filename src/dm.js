@@ -91,7 +91,6 @@ module.exports = {
                             else {
                                 let threadChannel2 = await channelManager.findThreadChannelCategoryInDM(data.channel_id);
 
-
                                 console.log(data.channel_id);
 
                                 await threadChannel2.send({

@@ -82,7 +82,8 @@ module.exports = async (commands) => {
                                 (new MessageEmbed())
                                     .setColor('#007bff')
                                     .setAuthor({
-                                        name: 'Staff'
+                                        name: commands.msg.author.tag,
+                                        iconURL: commands.msg.author.avatarURL()
                                     })
                                     .setDescription(content)
                                     .setTimestamp()
