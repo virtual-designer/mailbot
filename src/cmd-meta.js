@@ -1,5 +1,5 @@
 module.exports = {
-    version: '2.0.0-beta2',
+    version: '2.0.0-beta3',
     support: 'rakinar2@onesoftnet.ml',
     data: [
         {
