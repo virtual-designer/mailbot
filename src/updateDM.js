@@ -52,7 +52,7 @@ module.exports = {
                                     (new MessageEmbed())
                                     .setColor('#007bff')
                                     .setTitle("Message Updated")
-                                    .setDescription(commands.msg.content)
+                                    .setDescription(newMsg.content)
                                     .setAuthor({name: newMsg.author.tag})
                                     .setFooter({text: 'Updated'})
                                     .addField("Thread ID", data.thread_id + "")
