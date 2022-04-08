@@ -75,10 +75,22 @@ module.exports = {
             examples: "%%reply 45 Hi, your request has been accepted."
         },
         {
+            name: 'reply-anon',
+            description: 'Reply to a thread, anonymously. Info about your profile will not be sent. Users will see \'Staff\' as the username.',
+            usage: "%%reply-anon <ThreadID> <...Message>",
+            examples: "%%reply-anon 45 Hi, your request has been accepted."
+        },
+        {
             name: 'rt',
             description: 'Reply to a thread, inside a thread channel. This command won\'t work outside of a thread channel.',
             usage: "%%rt <...Message>",
             examples: "%%rt Hi, your request has been accepted."
+        },
+        {
+            name: 'rta',
+            description: 'Reply to a thread, anonymously, inside a thread channel. Info about your profile will not be sent. Users will see \'Staff\' as the username. This command won\'t work outside of a thread channel.',
+            usage: "%%rta <...Message>",
+            examples: "%%rta Hi, your request has been accepted."
         },
         {
             name: 'set-prefix',
