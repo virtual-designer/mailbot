@@ -15,6 +15,12 @@ module.exports = {
             examples: "%%close 78\n%%close 80 -d"
         },
         {
+            name: 'ct',
+            description: 'Closes a thread, inside a thread channel. Passing `-d` will delete the thread channel.',
+            usage: "%%ct [-d]",
+            examples: "%%ct\n%%ct -d"
+        },
+        {
             name: 'cmd-notfound-warn',
             description: 'Toggle (Enable/disable) command not found warning.',
             usage: "%%cmd-notfound-warn",
