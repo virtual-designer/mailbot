@@ -3,7 +3,7 @@ const { findThreadChannelCategory } = require('../channelManager');
 const { generate } = require('../log');
 
 module.exports = async (commands) => {
-    if (commands.msg.channel.parent.id !== global.config.props.channel_category) {
+    if (commands.msg.channel?.parent?.id !== global.config.props.channel_category) {
         await commands.msg.reply({
             embeds: [
                 (new MessageEmbed())
@@ -73,16 +73,16 @@ module.exports = async (commands) => {
 
                 let threadChannel = findThreadChannelCategory(data.channel_id);
 
-                await threadChannel.send({
-                    embeds: [
-                        (new MessageEmbed())
-                            .setColor('#f14a60')
-                            .setDescription(`This thread has been closed.`)
-                            .addField('ID', data.id + '')
-                            .setFooter({text: 'Closed'})
-                            .setTimestamp()
-                    ]
-                });
+                // await threadChannel.send({
+                //     embeds: [
+                //         (new MessageEmbed())
+                //             .setColor('#f14a60')
+                //             .setDescription(`This thread has been closed.`)
+                //             .addField('ID', data.id + '')
+                //             .setFooter({text: 'Closed'})
+                //             .setTimestamp()
+                //     ]
+                // });
 
                 const user = client.users.cache.get(data.user_id);
 

@@ -109,13 +109,16 @@ module.exports = async (commands) => {
                         embeds: [
                             (new MessageEmbed())
                                 .setColor('#5cb85c')
-                                .setTitle("Reply Sent")
-                                .addField("Sent by", commands.msg.author.tag + '')
+                                .setAuthor({
+                                    iconURL: commands.msg.author.displayAvatarURL(),
+                                    name: commands.msg.author.tag
+                                })
+                                .setDescription(content)
                                 .addField("Thread ID", data.id + "")
                                 .addField("Message ID", data2.id + "")
                                 .setTimestamp()
                                 .setFooter({
-                                    text: 'Sent',
+                                    text: 'Normal Reply',
                                 })
                         ]
                     });

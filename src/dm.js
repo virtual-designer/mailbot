@@ -66,7 +66,7 @@ module.exports = {
                                         (new MessageEmbed())
                                         .setColor('#007bff')
                                         .setTitle("New Thread")
-                                        .setDescription('This is the start of the thread conversation. Use `-rt <message>` to send a message.')
+                                        .setDescription('This is the start of the thread conversation. Use `-rta <message>` to send a message.')
                                         .setAuthor({name: this.msg.author.tag})
                                         .addField("Thread ID", data.id + "")
                                         .setFooter({text: 'Created'})

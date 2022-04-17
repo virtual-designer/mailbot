@@ -9,5 +9,9 @@
 A Discord bot for contacting server staff. 
 This bot was specially made for [The Everything Server](https://discord.gg/x7DHfyh4NS) Discord server.
 
+## Setup
+Before running the bot make sure that you've copied `config/config-example.json` to `config/config.json`!
+When running the bot for the first time, run `-setup` in the server where the bot is in.
+
 ### Support
 Please email at rakinar2@onesoftnet.ml.

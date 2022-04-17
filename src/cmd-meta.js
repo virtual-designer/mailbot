@@ -1,5 +1,5 @@
 module.exports = {
-    version: '2.0.0',
+    version: '3.0.0-beta1',
     support: 'rakinar2@onesoftnet.ml',
     data: [
         {
@@ -37,6 +37,18 @@ module.exports = {
             description: 'Toggle debug mode. If enabled, some debug info will be sent when running commands. When enabled, unauthorized users will see a warning if they run some command. Also, running commands outside of that channel will cause a warning. Disabling this mode suppresses all warnings.',
             usage: "%%debug",
             examples: "%%debug"
+        },
+        {
+            name: 'delall',
+            description: 'Deletes multiple threads. Passing nothing will delete all open threads, passing `-c` will only deleted closed threads, and passing `-a` will delete all.',
+            usage: "%%delall [-c|-a]",
+            examples: "%%delall\n%%delall -c\n%%delall -a"
+        },
+        {
+            name: 'dt',
+            description: 'Deletes a thread, inside a thread channel.',
+            usage: "%%dt",
+            examples: "%%dt"
         },
         {
             name: 'editreply',
