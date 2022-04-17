@@ -3,8 +3,6 @@ const fs = require('fs');
 const path = require('path');
 const keepAlive = require('./server');
 
-keepAlive();
-
 const config = require('./config');
 config.load();
 global.config = config;
@@ -18,7 +16,6 @@ global.commands = commands;
 const dm = require('./dm');
 const updateDM = require('./updateDM');
 const database = require('./database');
-const { db } = require('./database');
 
 if (fs.existsSync(path.resolve(__dirname, "..", ".env"))) {
     console.log("Loading env file...");
@@ -45,6 +42,8 @@ client.on('ready', () => {
 
     commands.init();
     database.init();
+
+    keepAlive();
 });
 
 client.on('messageCreate', async (message) => {
