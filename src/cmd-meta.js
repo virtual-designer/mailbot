@@ -1,5 +1,5 @@
 module.exports = {
-    version: '3.0.0-beta1',
+    version: '3.1.0-beta1',
     support: 'rakinar2@onesoftnet.ml',
     data: [
         {
@@ -81,6 +81,12 @@ module.exports = {
             examples: "%%msg 45"
         },
         {
+            name: 'newthread',
+            description: 'Create a new thread for conversation with an user.',
+            usage: "%%newthread <UserID|Mention>",
+            examples: "%%newthread 45u7544636767345\n%%newthread @testuser"
+        },
+        {
             name: 'ping',
             description: 'Set the role for message pings.',
             usage: "%%ping <RoleMention>",
@@ -109,6 +115,12 @@ module.exports = {
             description: 'Reply to a thread, anonymously, inside a thread channel. Info about your profile will not be sent. Users will see \'Staff\' as the username. This command won\'t work outside of a thread channel.',
             usage: "%%rta <...Message>",
             examples: "%%rta Hi, your request has been accepted."
+        },
+        {
+            name: 'sendmsg',
+            description: 'Send a new message to a user. If there is no open thread for the given user, the system will create one. Passing `-a` will cause the reply to be sent as anonymous.',
+            usage: "%%sendmsg <UserID|Mention> [-a] <Message>",
+            examples: "%%sendmsg @testuser Hello message!\n%%sendmsg @testuser -a Hello message!\n%%sendmsg 468937893402411 Hello message!\n%%sendmsg 468937893402411 -a Hello message!"
         },
         {
             name: 'set-prefix',
