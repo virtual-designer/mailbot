@@ -1,5 +1,5 @@
 module.exports = {
-    version: '3.1.0-beta1',
+    version: '3.1.1-beta1',
     support: 'rakinar2@onesoftnet.ml',
     data: [
         {
@@ -82,7 +82,7 @@ module.exports = {
         },
         {
             name: 'newthread',
-            description: 'Create a new thread for conversation with an user.',
+            description: 'Create a new thread for conversation with an user. If you have an existing open thread with the given user, it will only send the messages to the user that you send, but the user\'s messages will be sent to the previous thread.',
             usage: "%%newthread <UserID|Mention>",
             examples: "%%newthread 45u7544636767345\n%%newthread @testuser"
         },

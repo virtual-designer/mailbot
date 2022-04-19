@@ -5,7 +5,7 @@ const { generate } = require('../log');
 const widgetManager = require('../widgetManager');
 
 async function inner(commands, message, threadChannel, id, i, a) {
-    await db.get('SELECT * FROM threads WHERE status = 1 ORDER BY id DESC LIMIT 0, 1', async (err, data) => {    
+    await db.get('SELECT * FROM threads WHERE status = 1 AND channel_id = ? ORDER BY id DESC LIMIT 0, 1', [threadChannel.id], async (err, data) => {    
         await db.get("INSERT INTO replies(content, user, user_id, date, thread_id, msg_id) VALUES(?, ?, ?, ?, ?, ?)", [
             message,
             commands.msg.author.tag,
@@ -38,8 +38,8 @@ async function inner(commands, message, threadChannel, id, i, a) {
                         (new MessageEmbed())
                             .setColor('#5cb85c')
                             .setAuthor({
-                                iconURL: commands.msg.author.displayAvatarURL(),
-                                name: commands.msg.author.tag
+                                iconURL: i === 2 ? client.user.displayAvatarURL() : commands.msg.author.displayAvatarURL(),
+                                name: i === 2 ? 'Staff' : commands.msg.author.tag
                             })
                             .setDescription(message)
                             .addField("Thread ID", data.id + "")
@@ -96,38 +96,50 @@ async function inner(commands, message, threadChannel, id, i, a) {
                     await channel.send(obj);
                 }
 
-                const user = client.users.cache.get(data.user_id);
+                try {
+                    const user = await commands.msg.guild.members.fetch(data.user_id);
 
-                if (typeof user !== 'undefined') {
-                    if (a !== undefined) {
-                        await user.send({
+                    console.log(user);
+
+                    if (typeof user !== 'undefined') {
+                        console.log('user');
+                        
+                        if (a !== undefined) {
+                            await user.send({
+                                embeds: [
+                                    (new MessageEmbed())
+                                        .setColor('#007bff')
+                                        .setDescription('New thread created')
+                                ]
+                            });
+                        }
+
+                        const msg = await user.send({
                             embeds: [
                                 (new MessageEmbed())
                                     .setColor('#007bff')
-                                    .setDescription('New thread created')
+                                    .setAuthor({
+                                        name: i === 2 ? 'Staff' : commands.msg.author.tag,
+                                        iconURL: i === 2 ? client.user.avatarURL() : commands.msg.author.displayAvatarURL(),
+                                    })
+                                    .setDescription(message)
+                                    .setTimestamp()
+                                    .setFooter({
+                                        text: 'Received',
+                                    })
                             ]
                         });
+
+                        console.log(msg);
+
+                        await db.get('UPDATE replies SET msg_id = ? WHERE id = ?', [msg.id, data2.id], async (err) => {});
                     }
 
-                    const msg = await user.send({
-                        embeds: [
-                            (new MessageEmbed())
-                                .setColor('#007bff')
-                                .setAuthor({
-                                    name: i === 2 ? 'Staff' : commands.msg.author.tag,
-                                    iconURL: i === 2 ? client.user.avatarURL() : commands.msg.author.displayAvatarURL(),
-                                })
-                                .setDescription(message)
-                                .setTimestamp()
-                                .setFooter({
-                                    text: 'Received',
-                                })
-                        ]
-                    });
-
-                    await db.get('UPDATE replies SET msg_id = ? WHERE id = ?', [msg.id, data2.id], async (err) => {});
                 }
-
+                catch(e) {
+                    console.log(e);
+                }
+                
                 await commands.msg.reply({
                     embeds: [
                         (new MessageEmbed())
@@ -142,19 +154,26 @@ async function inner(commands, message, threadChannel, id, i, a) {
 }
 
 module.exports = async (commands) => {
-    let id = typeof commands.args[0] === 'undefined' ? undefined : commands.args[0];
+    if (commands.args[1] === undefined) {
+        await commands.msg.reply({
+            embeds: [
+                (new MessageEmbed())
+                .setColor('#f14a60')
+                .setDescription(`:x:\tThe command \`${commands.commandName}\` requires at two one arguments.`)
+            ]
+        });
 
-    if (id === undefined) {
-        id = commands.msg.mentions?.first();
-        id = id === null ? undefined : id;
+        return;
     }
-    else {
+
+    let id = commands.msg.mentions?.members?.first();
+    
+    if (typeof id !== 'object' || id === null) {
         try {
-            id = await commands.msg.guild.members.fetch(id);
+            id = await commands.msg.guild.members.fetch(commands.args[0]);
+            console.log(id);
         }
         catch (e) {
-            console.log(e);
-
             await commands.msg.reply({
                 embeds: [
                     (new MessageEmbed())
@@ -163,7 +182,7 @@ module.exports = async (commands) => {
                 ]
             });
     
-            return;
+            return;    
         }
     }
 
@@ -172,12 +191,12 @@ module.exports = async (commands) => {
     if (commands.args[1] === '-a')
         i = 2;
 
-    if (id === undefined || commands.args[i] === undefined) {
+    if (i === 2 && commands.args[i] === undefined) {
         await commands.msg.reply({
             embeds: [
                 (new MessageEmbed())
                 .setColor('#f14a60')
-                .setDescription(`:x:\tThe command \`${commands.commandName}\` requires at two one arguments.`)
+                .setDescription(`:x:\tYou must specify the message.`)
             ]
         });
 

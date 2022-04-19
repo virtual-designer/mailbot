@@ -3,33 +3,7 @@ const channelManager = require('../channelManager');
 const widgetManager = require('../widgetManager');
 
 module.exports = async (commands) => {
-    let id = typeof commands.args[0] === 'undefined' ? undefined : commands.args[0];
-
-    if (id === undefined) {
-        id = commands.msg.mentions?.first();
-        id = id === null ? undefined : id;
-    }
-    else {
-        try {
-            id = await commands.msg.guild.members.fetch(id);
-            console.log(id);
-        }
-        catch (e) {
-            console.log(e);
-
-            await commands.msg.reply({
-                embeds: [
-                    (new MessageEmbed())
-                    .setColor('#f14a60')
-                    .setDescription(`:x:\tInvalid user ID given.`)
-                ]
-            });
-    
-            return;
-        }
-    }
-
-    if (id === undefined) {
+    if (commands.args[0] === undefined) {
         await commands.msg.reply({
             embeds: [
                 (new MessageEmbed())
@@ -40,8 +14,32 @@ module.exports = async (commands) => {
 
         return;
     }
+    
+    let id = commands.msg.mentions?.members?.first();
+    
+    if (typeof id !== 'object' || id === null) {
+        try {
+            id = await commands.msg.guild.members.fetch(commands.args[0]);
+            console.log(id);
+        }
+        catch (e) {
+            await commands.msg.reply({
+                embeds: [
+                    (new MessageEmbed())
+                    .setColor('#f14a60')
+                    .setDescription(`:x:\tInvalid user ID given.`)
+                ]
+            });
+    
+            return;    
+        }
+    }
 
     await global.db.serialize(async () => {
+        if (typeof id.user === 'undefined') {
+            id.user = id;
+        }
+
         id.tag = id.user.username + '#' + id.user.discriminator;
         let threadChannel = await channelManager.createThread({
             author: id.user
@@ -52,7 +50,7 @@ module.exports = async (commands) => {
                 console.log('Query failed: dm.js: ' + err);
             }
 
-            await db.get('SELECT * FROM threads WHERE status = 1 ORDER BY id DESC LIMIT 0, 1', async (err, data) => {
+            await db.get('SELECT * FROM threads WHERE status = 1 AND channel_id = ? ORDER BY id DESC LIMIT 0, 1', [threadChannel.id], async (err, data) => {
                 const user = client.users.cache.get(data.user_id);
 
                 if (typeof user !== 'undefined') {
