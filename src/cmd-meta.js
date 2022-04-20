@@ -1,5 +1,5 @@
 module.exports = {
-    version: '3.1.1-beta1',
+    version: '3.2.0',
     support: 'rakinar2@onesoftnet.ml',
     data: [
         {
@@ -16,9 +16,9 @@ module.exports = {
         },
         {
             name: 'ct',
-            description: 'Closes a thread, inside a thread channel. Passing `-d` will delete the thread channel.',
-            usage: "%%ct [-d]",
-            examples: "%%ct\n%%ct -d"
+            description: 'Closes a thread, inside a thread channel. Passing `-d` will delete the thread channel. Also, you can pass a time interval (e. g. `12h`) to close the thread automatically after that time.',
+            usage: "%%ct [-d] [timeout]",
+            examples: "%%ct\n%%ct -d\n%%ct 10h\n%%ct 5h -d"
         },
         {
             name: 'cmd-notfound-warn',
