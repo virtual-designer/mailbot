@@ -15,7 +15,6 @@ module.exports = async (commands) => {
         return;
     }
 
-    global.db.serialize(async () => {
         global.db.get("SELECT * FROM threads WHERE channel_id = ?", [commands.msg.channel.id], async (err, data) => {
             if (err) {
                 console.log(err);
@@ -103,5 +102,4 @@ module.exports = async (commands) => {
                 });
             });
         });
-    });    
 };

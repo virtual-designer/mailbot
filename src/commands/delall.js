@@ -13,7 +13,6 @@ module.exports = async (commands) => {
         q = ' WHERE status = 0';
     }
 
-    global.db.serialize(async () => {
         global.db.all("SELECT * FROM threads" + q, async (err, data) => {
             if (err) {
                 console.log(err);
@@ -77,7 +76,12 @@ module.exports = async (commands) => {
                     
                     await generate(obj);
 
-                    await channel.send(obj);
+                    try {
+                        await channel.send(obj);
+                    }
+                    catch(e) {
+                        console.log(e);
+                    }
                 }
 
                 try {
@@ -87,12 +91,12 @@ module.exports = async (commands) => {
                                 .setColor('#007bff')
                                 .setDescription(`All ${q === '' ? '' : 'open '}threads have been closed.`)
                         ]
-                    });
+                    })
+                    .catch(() => {});
                 }
                 catch(e) {
                     console.log(e);
                 }
             });
         });
-    });    
 };

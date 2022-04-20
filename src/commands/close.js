@@ -15,7 +15,6 @@ module.exports = async (commands) => {
         return;
     }
 
-    global.db.serialize(async () => {
         global.db.get("SELECT * FROM threads WHERE id = ?", [commands.args[0].trim()], async (err, data) => {
             if (err) {
                 console.log(err);
@@ -115,5 +114,4 @@ module.exports = async (commands) => {
                 });
             });
         });
-    });    
 };
