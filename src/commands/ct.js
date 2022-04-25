@@ -90,7 +90,9 @@ module.exports = async (commands) => {
 
     let timeout = null;
 
-    if (commands.args[0] !== undefined) {
+    let args1 = commands.args.filter(arg => arg[0] !== '-');
+
+    if (args1[0] !== undefined) {
         timeout = Math.abs(ms(commands.args[0]));
 
         if (typeof timeout !== 'number') {

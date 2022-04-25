@@ -46,7 +46,7 @@ module.exports = {
                                         .addField("Message ID", data2.id + "")
                                         .setTimestamp()
                                         .setFooter({
-                                            text: this.newThread ? 'Created' : 'Sent',
+                                            text: this.newThread ? 'Created' : 'Received',
                                         });
 
                                 let obj = {
