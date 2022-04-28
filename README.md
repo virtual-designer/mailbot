@@ -1,3 +1,5 @@
+<img src="https://cdn.onesoftdir.ml/images/projects/mailbot/mailbot.png" width="100%">
+
 # Mailbot
 
 [![Build](https://github.com/virtual-designer/mailbot/actions/workflows/build.yml/badge.svg)](https://github.com/virtual-designer/mailbot/actions/workflows/build.yml)
