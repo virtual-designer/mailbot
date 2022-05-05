@@ -1,4 +1,4 @@
-<img src="https://cdn.onesoftdir.ml/images/projects/mailbot/mailbot.png" width="100%">
+<img src="https://res.cloudinary.com/rakinar2/image/upload/v1651761587/MailBot-presentation2_ym78uk.png" width="100%">
 
 # Mailbot
 
